@@ -100,9 +100,12 @@ function createMidi(notes: NoteEvent[]): Uint8Array {
  * @param audioData The audio data to convert, as a Buffer (Node.js) or ArrayBuffer (Browser).
  * @returns A promise that resolves to a Uint8Array containing the MIDI file data.
  */
-export async function audioToMidi(audioData: Buffer | ArrayBuffer): Promise<Uint8Array> {
+export async function audioToMidi(
+	audioData: Buffer | ArrayBuffer,
+	fileType?: string,
+): Promise<Uint8Array> {
 	// 1. Decode the audio file into raw PCM data
-	const { sampleRate, channelData } = await decodeAudio(audioData);
+	const { sampleRate, channelData } = await decodeAudio(audioData, fileType);
 
 	// Use the first channel for analysis (convert to mono)
 	const pcmData = channelData[0];

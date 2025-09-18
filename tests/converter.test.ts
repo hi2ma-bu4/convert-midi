@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { WaveFile } from "wavefile";
 import { audioToMidi, midiToJson } from "../src/index";
+import * as fs from "fs";
+import * as path from "path";
 
 /**
  * Generates a WAV file buffer containing a sine wave.
@@ -30,7 +32,7 @@ describe("audioToMidi Converter", () => {
 
 		// 2. Convert audio to MIDI
 		// Ensure it's a native Node.js Buffer for the test environment
-		const midiData = await audioToMidi(Buffer.from(wavBuffer));
+		const midiData = await audioToMidi(Buffer.from(wavBuffer), "wav");
 		expect(midiData).toBeInstanceOf(Uint8Array);
 		expect(midiData.length).toBeGreaterThan(0);
 
@@ -63,7 +65,7 @@ describe("audioToMidi Converter", () => {
 		wav.fromScratch(1, sampleRate, "32f", silentSamples);
 		const silentWav = wav.toBuffer();
 
-		const midiData = await audioToMidi(Buffer.from(silentWav));
+		const midiData = await audioToMidi(Buffer.from(silentWav), "wav");
 		expect(midiData).toBeInstanceOf(Uint8Array);
 
 		const midiJson = midiToJson(midiData);
@@ -75,5 +77,31 @@ describe("audioToMidi Converter", () => {
 		} else {
 			expect(midiData.length).toBe(0);
 		}
+	});
+
+	it("should convert an MP3 file to MIDI", async () => {
+		const mp3Path = path.resolve(__dirname, "media/test.mp3");
+		const mp3Buffer = fs.readFileSync(mp3Path);
+		const midiData = await audioToMidi(mp3Buffer, "mp3");
+		expect(midiData).toBeInstanceOf(Uint8Array);
+		expect(midiData.length).toBeGreaterThan(0);
+		const midiJson = midiToJson(midiData);
+		expect(midiJson).not.toBeNull();
+		const notes = midiJson?.tracks[0]?.notes;
+		expect(notes).toBeDefined();
+		expect(notes.length).toBeGreaterThan(0);
+	});
+
+	it("should convert an M4A file to MIDI", async () => {
+		const m4aPath = path.resolve(__dirname, "media/test.m4a");
+		const m4aBuffer = fs.readFileSync(m4aPath);
+		const midiData = await audioToMidi(m4aBuffer, "m4a");
+		expect(midiData).toBeInstanceOf(Uint8Array);
+		expect(midiData.length).toBeGreaterThan(0);
+		const midiJson = midiToJson(midiData);
+		expect(midiJson).not.toBeNull();
+		const notes = midiJson?.tracks[0]?.notes;
+		expect(notes).toBeDefined();
+		expect(notes.length).toBeGreaterThan(0);
 	});
 });
