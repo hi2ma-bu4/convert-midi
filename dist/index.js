@@ -4,20 +4,16 @@ import { PitchDetector } from "pitchy";
 
 // src/decoder.ts
 import { decode } from "wav-decoder";
-function decodeAudio(audioData) {
+async function decodeAudio(audioData) {
   if (typeof window === "undefined") {
     if (!(audioData instanceof Buffer)) {
-      return Promise.reject(new Error("In Node.js, input must be a Buffer."));
+      throw new Error("In Node.js, input must be a Buffer.");
     }
-    try {
-      const decoded = decode(audioData);
-      return Promise.resolve({
-        sampleRate: decoded.sampleRate,
-        channelData: decoded.channelData
-      });
-    } catch (err) {
-      return Promise.reject(err);
-    }
+    const decoded = await decode(audioData);
+    return {
+      sampleRate: decoded.sampleRate,
+      channelData: decoded.channelData
+    };
   } else {
     if (!(audioData instanceof ArrayBuffer)) {
       return Promise.reject(new Error("In the browser, input must be an ArrayBuffer."));
