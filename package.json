@@ -1,0 +1,44 @@
+{
+  "name": "audio-to-midi-converter",
+  "version": "0.1.0",
+  "description": "A library to convert audio files (WAV) to MIDI data, usable in Node.js and browsers.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean",
+    "dev": "tsup src/index.ts --format esm,cjs --dts --watch",
+    "test": "vitest run"
+  },
+  "keywords": [
+    "audio",
+    "midi",
+    "converter",
+    "typescript",
+    "music"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4",
+    "wavefile": "^11.0.0"
+  },
+  "dependencies": {
+    "@tonejs/midi": "^2.0.28",
+    "pitchy": "^4.1.0",
+    "wav-decoder": "^1.3.0"
+  }
+}
