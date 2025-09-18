@@ -29,7 +29,8 @@ describe("audioToMidi Converter", () => {
 		const wavBuffer = generateSineWav(440, 1);
 
 		// 2. Convert audio to MIDI
-		const midiData = await audioToMidi(wavBuffer);
+		// Ensure it's a native Node.js Buffer for the test environment
+		const midiData = await audioToMidi(Buffer.from(wavBuffer));
 		expect(midiData).toBeInstanceOf(Uint8Array);
 		expect(midiData.length).toBeGreaterThan(0);
 
@@ -62,7 +63,7 @@ describe("audioToMidi Converter", () => {
 		wav.fromScratch(1, sampleRate, "32f", silentSamples);
 		const silentWav = wav.toBuffer();
 
-		const midiData = await audioToMidi(silentWav);
+		const midiData = await audioToMidi(Buffer.from(silentWav));
 		expect(midiData).toBeInstanceOf(Uint8Array);
 
 		const midiJson = midiToJson(midiData);

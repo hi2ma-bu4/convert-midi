@@ -6,21 +6,18 @@ export interface DecodedAudioData {
 }
 
 // This function will handle decoding for both Node.js (Buffer) and Browser (ArrayBuffer)
-export function decodeAudio(audioData: Buffer | ArrayBuffer): Promise<DecodedAudioData> {
+export async function decodeAudio(audioData: Buffer | ArrayBuffer): Promise<DecodedAudioData> {
 	// Node.js environment
 	if (typeof window === "undefined") {
 		if (!(audioData instanceof Buffer)) {
-			return Promise.reject(new Error("In Node.js, input must be a Buffer."));
+			throw new Error("In Node.js, input must be a Buffer.");
 		}
-		try {
-			const decoded = decode(audioData);
-			return Promise.resolve({
-				sampleRate: decoded.sampleRate,
-				channelData: decoded.channelData,
-			});
-		} catch (err) {
-			return Promise.reject(err);
-		}
+		// The `decode` function from "wav-decoder" returns a promise
+		const decoded = await decode(audioData);
+		return {
+			sampleRate: decoded.sampleRate,
+			channelData: decoded.channelData,
+		};
 	}
 	// Browser environment
 	else {
