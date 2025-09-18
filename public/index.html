@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>WAV to MIDI Converter</title>
+		<style>
+			body {
+				font-family: sans-serif;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				min-height: 100vh;
+				background-color: #f0f0f0;
+			}
+			#container {
+				background-color: white;
+				padding: 2rem;
+				border-radius: 8px;
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+				text-align: center;
+			}
+			#file-input {
+				margin-bottom: 1rem;
+			}
+			#convert-btn {
+				padding: 0.5rem 1rem;
+				cursor: pointer;
+			}
+			#status {
+				margin-top: 1rem;
+				font-weight: bold;
+			}
+			#download-link {
+				display: none;
+				margin-top: 1rem;
+			}
+			#json-output {
+				display: none;
+				margin-top: 1rem;
+				text-align: left;
+				background-color: #eee;
+				padding: 1rem;
+				border-radius: 4px;
+				max-height: 300px;
+				overflow-y: auto;
+				white-space: pre-wrap;
+				word-wrap: break-word;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container">
+			<h1>WAV to MIDI Converter</h1>
+			<p>Upload a .wav file to convert it to MIDI.</p>
+			<input type="file" id="file-input" accept=".wav" />
+			<br />
+			<button id="convert-btn">Convert</button>
+			<div id="status"></div>
+			<a id="download-link" download="output.mid">Download MIDI</a>
+			<pre id="json-output"></pre>
+		</div>
+
+		<script type="module" src="main.js"></script>
+	</body>
+</html>
